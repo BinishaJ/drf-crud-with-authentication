@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework import permissions, authentication
 
 # from rest_framework. 
@@ -13,7 +13,7 @@ from .serializers import BookSerializer, AuthorSerializer
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([SessionAuthentication])
+@authentication_classes([BasicAuthentication])
 def apiOverview(request):
     url = 'http://127.0.0.1:8000/api/'
     try:
@@ -68,7 +68,7 @@ def bookRead(request,pk):
 
 
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication])
+@authentication_classes([BasicAuthentication])
 @permission_classes([IsAdminUser])
 def bookCreate(request):
     serializer = BookSerializer(data=request.data)
@@ -146,7 +146,7 @@ def authorRead(request,pk):
 
 class authorCreate(APIView):
     permission_classes = [permissions.IsAdminUser]
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.BasicAuthentication]
     def post(self, request, format=None):
         try:
             serializer = AuthorSerializer(data=request.data)
